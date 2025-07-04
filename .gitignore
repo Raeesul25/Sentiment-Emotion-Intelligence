@@ -1,0 +1,5 @@
+.env
+/database
+/models
+/dataset
+/__pycache__
