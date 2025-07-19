@@ -2,19 +2,19 @@
 
 ## Overview
 
-This project presents a real-time AI-driven solution for analyzing customer feedback in e-commerce. It utilizes advanced Natural Language Processing (NLP) techniques and a transformer-based deep learning model (DeBERTa) to extract insights related to sentiment, emotion, and product aspects from customer reviews. The insights are visualized through an interactive dashboard to support data-driven business decision-making.
+This project presents a real-time AI-driven solution for analyzing customer feedback in e-commerce. It utilizes advanced Natural Language Processing (NLP) techniques, a transformer-based deep learning model (DeBERTa), Large Language Models (LLMs) to extract insights related to sentiment, emotion, and product aspects from customer reviews. The insights are visualized through an interactive dashboard to support data-driven business decision-making.
 
 ### Aim
 
-To develop a scalable and intelligent system for real-time sentiment and emotion analysis of customer feedback to optimize e-commerce user experience.
+To design and implement an AI-powered feedback intelligence system capable of performing real-time sentiment analysis, emotion recognition, and aspect-based sentiment analysis (ABSA) on e-commerce customer reviews using transformer-based deep learning and retrieval-augmented generation (RAG) models.
 
 ### Objectives
 
-- To build a real-time data ingestion pipeline using Apache Kafka.
-- To implement real-time feedback processing with Apache Spark Streaming.
-- To develop a deep learning-based model for sentiment and emotion classification.
-- To generate aspect terms using NLP techniques.
-- To visualize actionable insights through an interactive Streamlit dashboard.
+- To evaluate and compare transformer-based models (BERT, RoBERTa, DeBERTa) for customer sentiment classification.
+- To implement a Retrieval-Augmented Generation (RAG) approach for context-aware emotion recognition in customer feedback.
+- To apply few-shot learning with large language models (LLMs) for effective ABSA on e-commerce product reviews.
+- To integrate all three tasks into a real-time, scalable AI pipeline using technologies such as Apache Kafka, Spark Streaming, and MongoDB.
+- To benchmark the system’s performance based on accuracy, response time, and scalability for practical deployment in business environments.
 
 ---
 
@@ -22,9 +22,9 @@ To develop a scalable and intelligent system for real-time sentiment and emotion
 
 ```
 .
-├── pipelines
-├── notebooks
-├── testing
+├── pipelines                   # Prediction Pipelines
+├── notebooks                   # Notebooks
+├── testing                     # Functional and Non-Funtional Testing
 ├── real_time/
 │   ├── kafka_producer.py             # Sends feedback to Kafka
 │   ├── real_time_stream_processor.py # Spark Streaming to process real-time data
