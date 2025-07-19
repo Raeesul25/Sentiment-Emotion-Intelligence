@@ -22,12 +22,16 @@ To develop a scalable and intelligent system for real-time sentiment and emotion
 
 ```
 .
+├── pipelines
+├── notebooks
+├── testing
 ├── real_time/
 │   ├── kafka_producer.py             # Sends feedback to Kafka
 │   ├── real_time_stream_processor.py # Spark Streaming to process real-time data
 │   
 ├── feedback_analyzer.py          # Flask API for sentiment & emotion analysis
-├── app.py                        # Streamlit frontend for the dashboard
+├── dashboard.py                  # Dashboard
+├── app.py                        # Streamlit frontend 
 ├── .env                          # Environment variables (MongoDB URI, etc.)
 ├── requirements.txt              # Python dependencies
 ```
@@ -61,6 +65,10 @@ pip install -r requirements.txt
 
 ```bash
 MONGO_URI=<your_mongodb_connection_string>
+GROQ_API_KEY=<your_groq_cloud_api_key>
+ASTRA_DB_API_ENDPOINT=<your_astradb_endpoint>
+ASTRA_DB_APPLICATION_TOKEN=<your_astradb_token>
+ASTRA_DB_KEYSPACE=<your_astradb_keyspace>
 ```
 
 3. Ensure Apache Kafka and Spark are installed and running locally.
