@@ -1,0 +1,106 @@
+# AI-Driven Sentiment & Emotion Intelligence for E-Commerce Feedback Optimization
+
+## Overview
+
+This project presents a real-time AI-driven solution for analyzing customer feedback in e-commerce. It utilizes advanced Natural Language Processing (NLP) techniques and a transformer-based deep learning model (DeBERTa) to extract insights related to sentiment, emotion, and product aspects from customer reviews. The insights are visualized through an interactive dashboard to support data-driven business decision-making.
+
+### Aim
+
+To develop a scalable and intelligent system for real-time sentiment and emotion analysis of customer feedback to optimize e-commerce user experience.
+
+### Objectives
+
+- To build a real-time data ingestion pipeline using Apache Kafka.
+- To implement real-time feedback processing with Apache Spark Streaming.
+- To develop a deep learning-based model for sentiment and emotion classification.
+- To generate aspect terms using NLP techniques.
+- To visualize actionable insights through an interactive Streamlit dashboard.
+
+---
+
+## Project Structure
+
+```
+.
+├── real_time/
+│   ├── kafka_producer.py             # Sends feedback to Kafka
+│   ├── real_time_stream_processor.py # Spark Streaming to process real-time data
+│   
+├── feedback_analyzer.py          # Flask API for sentiment & emotion analysis
+├── app.py                        # Streamlit frontend for the dashboard
+├── .env                          # Environment variables (MongoDB URI, etc.)
+├── requirements.txt              # Python dependencies
+```
+
+> **Database**: MongoDB (Local or Cloud)
+
+> **Language**: Python 3.10+
+
+> **Frameworks Required**: Apache Kafka, Apache Spark (installed locally)
+
+---
+
+## How to Run the Application
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/Raeesul25/Sentiment-Emotion-Intelligence.git
+cd Sentiment-Emotion-Intelligence
+```
+
+### Step 2: Set Up Environment
+
+1. Install required packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Set up your `.env` file:
+
+```bash
+MONGO_URI=<your_mongodb_connection_string>
+```
+
+3. Ensure Apache Kafka and Spark are installed and running locally.
+
+### Step 3: Download Dataset and Model
+
+Download the dataset and trained DeBERTa model from the following OneDrive links:
+
+- [Dataset Download Link](https://liverguac-my.sharepoint.com/:f:/g/personal/r_sally-zulfikar_rgu_ac_uk/Ep7Zy-8BCf9NmVRd75rMpBgBk1TIulvem3HhxM9ZtNDMSg?e=4x99EN)
+
+- [Model Download Link](https://liverguac-my.sharepoint.com/:f:/g/personal/r_sally-zulfikar_rgu_ac_uk/EgJob1UWfDpImo8vMXt3IPMBNidQbzIgOIsXanK-3cseyQ?e=fCCE8A)
+
+Extract and place them in the project root folder.
+
+### Step 4: Run Kafka Producer
+
+```bash
+python real_time\kafka_producer.py
+```
+
+### Step 5: Run Real-Time Stream Processor
+
+```bash
+python -m real_time.real_time_stream_processor
+```
+
+### Step 6: Run Feedback Analyzer API
+
+```bash
+python feedback_analyzer.py
+```
+
+### Step 7: Run Streamlit Dashboard
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## Author
+
+Raeesul Islam – MSc Big Data Analytics – Robert Gordon University
