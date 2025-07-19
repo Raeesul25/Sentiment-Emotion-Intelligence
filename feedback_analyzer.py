@@ -170,7 +170,7 @@ def after_request(response):
     gc.collect()  # Force garbage collection
     return response
 
-# Feedback analyzer - Testing
+# Feedback analyzer 
 @app.route('/analyze', methods=['POST'])
 def feedback_analyzer():
     try:
