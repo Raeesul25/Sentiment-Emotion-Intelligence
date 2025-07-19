@@ -4,7 +4,7 @@ from collections import defaultdict
 from pipelines.data_cleaning import clean_review_absa
 
 # Few-shot example selection per category
-def select_diverse_fewshot_examples(category_df, k=5):
+def select_diverse_fewshot_examples(category_df, k=10):
     aspect_sentiment_map = defaultdict(list)
     
     # Group reviews by (aspect, sentiment) to ensure diversity
@@ -48,7 +48,7 @@ def select_diverse_fewshot_examples(category_df, k=5):
 
 def build_prompt(review, category, train_df):
     category_examples = train_df[train_df["Category"] == category]
-    fewshot_examples = select_diverse_fewshot_examples(category_examples, k=5)
+    fewshot_examples = select_diverse_fewshot_examples(category_examples, k=10)
 
     prompt = (
 """

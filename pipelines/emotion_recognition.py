@@ -210,7 +210,12 @@ def predict_emotion(review_text, vector_store, llm_chain):
     review = clean_review_emotion(review_text)
     
     # Search in vector DB
-    results = vector_store.similarity_search_with_relevance_scores(review, k=5)
+    results = vector_store.similarity_search_with_relevance_scores(review, k=10)
+
+    # Check for 100% similarity match
+    for doc, score in results:
+        if score == 1.0:  # 100% similarity
+            return doc.metadata['emotion'], 1.00
     
     similar_texts = []
     for doc, score in results:
