@@ -2,6 +2,7 @@ import findspark
 findspark.init()
 
 import os
+import logging
 import requests
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col
@@ -9,6 +10,15 @@ from pyspark.sql.types import StructType, StringType
 
 os.environ['HADOOP_HOME'] = 'C:\\hadoop'
 os.environ['PATH'] = os.environ['PATH'] + ';C:\\hadoop\\bin'
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+logger = logging.getLogger('RealTimeStreaming')
 
 # === Spark Session ===
 spark = SparkSession \
@@ -57,12 +67,13 @@ def process_batch(df, epoch_id):
         }
         
         try:
+            logger.info(f"Received a new review to analysis...")
             response = requests.post("http://localhost:5000/analyze", json=payload)
             result = response.json()
-            print(f"Analyzed {result}")
+            logger.info(f"Review analyzed: {result}")
         
         except Exception as e:
-            print(f"Error processing row: {e}")
+            logger.error(f"Error processing row: {e}")
 
 
 # === Write to MongoDB ===

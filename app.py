@@ -4,7 +4,7 @@ import json
 import requests
 import streamlit as st
 from datetime import datetime
-from dashboard import dashboard
+from dashboard import RealTimeDashboard
 
 # Define item mappings by product category
 ITEM_IDS = {
@@ -99,6 +99,5 @@ if page == "Feedback Analysis":
 elif page == "Dashboard":
     st.markdown('<div class="title">AI-Driven Sentiment & Emotion Intelligence for E-Commerce Feedback Optimization</div>', unsafe_allow_html=True)
     st.markdown("### 📊 Real-Time Dashboard")
-    dashboard()
-    # st.write("This section will display live visualizations and insights from customer feedback.")
-    # st.info("Dashboard is under construction or already implemented.")
+    RealTimeDashboard = RealTimeDashboard()
+    RealTimeDashboard.dashboard()    

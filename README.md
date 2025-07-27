@@ -89,16 +89,16 @@ Extract and place them in the project root folder.
 python real_time\kafka_producer.py
 ```
 
-### Step 5: Run Real-Time Stream Processor
-
-```bash
-python -m real_time.real_time_stream_processor
-```
-
-### Step 6: Run Feedback Analyzer API
+### Step 5: Run Feedback Analyzer API
 
 ```bash
 python feedback_analyzer.py
+```
+
+### Step 6: Run Real-Time Stream Processor
+
+```bash
+python -m real_time.real_time_stream_processor
 ```
 
 ### Step 7: Run Streamlit Dashboard

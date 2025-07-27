@@ -2,6 +2,7 @@ import os
 import gc
 import time
 import threading
+import logging
 import pandas as pd
 from functools import lru_cache
 from pymongo import MongoClient
@@ -24,6 +25,15 @@ filterwarnings('ignore')
 # ============= CONFIGURATION =============
 load_dotenv()
 
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+logger = logging.getLogger('FeedbackAnalyzer')
+
 # Setup API Keys
 ASTRA_DB_API_ENDPOINT = os.getenv('ASTRA_DB_API_ENDPOINT')
 ASTRA_DB_APPLICATION_TOKEN = os.getenv('ASTRA_DB_APPLICATION_TOKEN')
@@ -45,10 +55,11 @@ class ModelManager:
         return cls._instance
     
     def __init__(self):
+        self.logger = logging.getLogger('FeedbackAnalyzer')
         if self._initialized:
             return
             
-        print("Initializing models...")
+        self.logger.info("Initializing models...")
         
         # ======= Sentiment Analysis Model =============
         load_path = "D:/MSc/Sentiment & Emotion Intelligence/models/DeBERTa_model"
@@ -110,7 +121,7 @@ class ModelManager:
         self.min_llm_interval = 0.1  # Minimum 100ms between LLM calls
         
         self._initialized = True
-        print("Models initialized successfully!")
+        self.logger.info("Models initialized successfully!")
 
     def get_llm_with_rate_limit(self):
         """Ensure minimum interval between LLM calls"""
@@ -139,7 +150,7 @@ def optimized_predict_sentiment(review):
     try:
         return predict_sentiment(review, model_manager.tokenizer, model_manager.sentiment_model)
     except Exception as e:
-        print(f"Sentiment prediction error: {e}")
+        logger.error(f"Sentiment prediction error: {e}")
         return "neutral", 0.5
 
 def optimized_predict_emotion(review):
@@ -148,7 +159,7 @@ def optimized_predict_emotion(review):
         # Add rate limiting for vector store queries
         return predict_emotion(review, model_manager.vector_store, model_manager.llm_chain_emotion)
     except Exception as e:
-        print(f"Emotion prediction error: {e}")
+        logger.error(f"Emotion prediction error: {e}")
         return "neutral", 0.5
 
 def optimized_predict_absa(review, category):
@@ -156,7 +167,7 @@ def optimized_predict_absa(review, category):
     try:
         return predict_absa(review, category, model_manager.absa_df, model_manager.llm_chain_absa)
     except Exception as e:
-        print(f"ABSA prediction error: {e}")
+        logger.error(f"ABSA prediction error: {e}")
         return {"aspects": [], "sentiments": []}
 
 
@@ -181,16 +192,22 @@ def feedback_analyzer():
         item_id = data.get("item_id", "")
         
         if not review:
+            logger.error("Review text is required..")
             return jsonify({'error': 'Review text is required'}), 400
+        
+        logger.info(f"New review is recieved: {category} - {item_id} - {review}")
         
         # Predict Sentiment Analysis (fastest, run first)
         sentiment, sentiment_conf = optimized_predict_sentiment(review)
+        logger.info(f"Predicted the Setiment Analysis: {sentiment} - {sentiment_conf}")
         
         # Predict Emotions (with rate limiting)
         emotion, emotion_conf = optimized_predict_emotion(review)
-        
+        logger.info(f"Recognized the Emotion: {emotion} - {emotion_conf}")
+
         # Predict ABSA (with pre-loaded dataset)  
         absa = optimized_predict_absa(review, category)
+        logger.info(f"Predicted the Aspect Analysis: {absa}")
         
         # Prepare document
         current_datetime = datetime.now()
@@ -212,8 +229,9 @@ def feedback_analyzer():
         try:
             result = model_manager.collection.insert_one(new_review)
             document_id = str(result.inserted_id)
+            logger.info(f"Successfully inserted analyzed review into MongoDB.")
         except Exception as db_error:
-            print(f"Database insertion error: {db_error}")
+            logger.error(f"Database insertion error: {db_error}")
             # Continue without failing the entire request
             document_id = "db_error"
         
@@ -236,7 +254,7 @@ def feedback_analyzer():
         return jsonify(response_data), 200
         
     except Exception as e:
-        print(f"General error in feedback_analyzer: {e}")
+        logger.error(f"General error in feedback_analyzer: {e}")
         return jsonify({
             'error': 'Internal server error occurred during analysis',
             'details': str(e)
@@ -245,7 +263,7 @@ def feedback_analyzer():
 
 # Main
 if __name__ == '__main__':
-    print("Starting optimized feedback analyzer...")
+    logger.info("Starting optimized feedback analyzer...")
     app.run(
         debug=False, 
         use_reloader=False,
