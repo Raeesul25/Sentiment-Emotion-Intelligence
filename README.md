@@ -83,25 +83,36 @@ Download the dataset and trained DeBERTa model from the following OneDrive links
 
 Extract and place them in the project root folder.
 
-### Step 4: Run Kafka Producer
-
+### Step 4: Start Kafka Server and Zookeeper (if running locally)
 ```bash
-python real_time\kafka_producer.py
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+.\bin\windows\kafka-server-start.bat .\config\server.properties
 ```
 
-### Step 5: Run Feedback Analyzer API
+### Step 5: Create a kafka topic
+```bash
+.\bin\windows\kafka-topics.bat --create --topic feedback-topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+```
+
+### Step 6: Run Feedback Analyzer API
 
 ```bash
 python feedback_analyzer.py
 ```
 
-### Step 6: Run Real-Time Stream Processor
+### Step 7: Run Real-Time Stream Processor
 
 ```bash
 python -m real_time.real_time_stream_processor
 ```
 
-### Step 7: Run Streamlit Dashboard
+### Step 8: Run Kafka Producer
+
+```bash
+python real_time\kafka_producer.py
+```
+
+### Step 9: Run Streamlit Dashboard
 
 ```bash
 streamlit run app.py
